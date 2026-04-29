@@ -1,0 +1,22 @@
+# Obsidian local state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache/
+.trash/
+
+# Local/private memory overrides
+packs/**/00-system/local/*.local.md
+packs/**/00-system/local/resource-map.local.md
+local/
+private/
+
+# Brainstorming/mockup scratch dirs
+.superpowers/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Generated files
+packs/**/00-system/generated/
