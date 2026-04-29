@@ -50,6 +50,8 @@ Create your own packs under:
 packs/<pack-slug>/
 ```
 
+By default, `packs/*` is ignored by Git so personal or company memory stays local and is not accidentally committed to the public repository. If you intentionally want to version a pack, adjust `.gitignore` in your own fork/repository first.
+
 ## Install as a Pi package
 
 From a local clone:

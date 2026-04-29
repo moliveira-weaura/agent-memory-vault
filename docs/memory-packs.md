@@ -8,6 +8,12 @@ A memory pack is a folder containing durable context for a project, company, cli
 python3 scripts/new-pack.py my-project
 ```
 
+## Git behavior
+
+The public starter repository ignores `packs/*` by default. This keeps personal or company memory local and prevents accidental commits to the open-source repository.
+
+If you intentionally want to version a pack in your own private repository, adjust `.gitignore` before adding it.
+
 ## Recommended structure
 
 ```txt

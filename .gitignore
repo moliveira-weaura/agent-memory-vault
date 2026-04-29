@@ -4,6 +4,12 @@
 .obsidian/cache/
 .trash/
 
+# Local/private memory packs
+# The open-source repository ships empty. User-created packs are local by default
+# to avoid accidentally committing personal/company memory.
+packs/*
+!packs/.gitkeep
+
 # Local/private memory overrides
 packs/**/00-system/local/*.local.md
 packs/**/00-system/local/resource-map.local.md
