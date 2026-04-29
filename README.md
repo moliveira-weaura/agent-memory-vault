@@ -1,58 +1,108 @@
-# Agent Memory Vault
+<p align="center">
+  <img src="https://em-content.zobj.net/source/apple/391/card-file-box_1f5c3-fe0f.png" width="120" alt="Card file box emoji" />
+</p>
 
-> A portable memory skill for AI coding agents that stores user context, actions, decisions, and environment observations in an Obsidian vault.
+<h1 align="center">Agent Memory Vault</h1>
 
-Agent Memory Vault is an open-source, AI-first memory system for coding agents and humans. It combines:
+<p align="center">
+  <strong>Give coding agents durable, safe, local-first memory.</strong>
+</p>
 
-1. **An Obsidian vault** for human-readable memory.
-2. **A portable agent skill** that teaches AI coding agents how to retrieve, evaluate, and safely update that memory.
-3. **Memory pack templates** for projects, companies, clients, environments, decisions, runbooks, sessions, and observations.
+<p align="center">
+  <a href="https://github.com/weauratech/agent-memory-vault/stargazers"><img src="https://img.shields.io/github/stars/weauratech/agent-memory-vault?style=flat&color=yellow" alt="Stars"></a>
+  <a href="https://github.com/weauratech/agent-memory-vault/commits/main"><img src="https://img.shields.io/github/last-commit/weauratech/agent-memory-vault?style=flat" alt="Last Commit"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/weauratech/agent-memory-vault?style=flat" alt="License"></a>
+  <a href="package.json"><img src="https://img.shields.io/github/package-json/v/weauratech/agent-memory-vault?style=flat" alt="Version"></a>
+</p>
 
-It is designed to help agents stop relying only on chat history and instead use durable, reviewable, version-controlled context.
+<p align="center">
+  <a href="#why-agent-memory-vault">Why</a> •
+  <a href="#before--after">Before/After</a> •
+  <a href="#5-minute-quickstart">Quickstart</a> •
+  <a href="#core-concepts">Concepts</a> •
+  <a href="#safety-model">Safety</a> •
+  <a href="#documentation">Docs</a>
+</p>
 
-## Why this exists
+---
 
-AI coding agents are more useful when they remember durable context:
+Agent Memory Vault is an open-source, AI-first memory system for coding agents and humans. It combines an **Obsidian-compatible vault**, a **portable agent skill**, **memory pack templates**, and **validation tooling** so agents can retrieve, use, and safely update durable context.
 
-- how a project is structured;
-- which commands are safe to run;
-- what decisions were made;
-- what runbooks exist;
-- what changed in an environment;
-- what the user prefers;
-- what should never be persisted.
-
-Agent Memory Vault gives that memory a safe structure.
-
-## What it stores
-
-Agent Memory Vault is intended for **safe operational context**, such as:
-
-- project context;
-- user preferences that are safe to remember;
-- environment observations;
-- actions performed;
-- decisions and ADRs;
-- runbooks;
-- troubleshooting notes;
-- source-of-truth pointers;
-- session handoffs.
-
-It must **not** store secrets or sensitive data.
-
-## Repository status
-
-This repository is intentionally shipped with no private/company packs. It is a clean starter vault.
-
-Create your own packs under:
+Instead of relying only on chat history, agents can work from reviewable, version-controlled Markdown memory.
 
 ```txt
-packs/<pack-slug>/
+Prompt → Retrieval Gate → Source truth → Work → Persistence Gate → Memory update
 ```
 
-By default, `packs/*` is ignored by Git so personal or company memory stays local and is not accidentally committed to the public repository. If you intentionally want to version a pack, adjust `.gitignore` in your own fork/repository first.
+## Why Agent Memory Vault?
 
-## Install as a Pi package
+AI coding agents are powerful, but they forget durable context between sessions:
+
+- project structure and conventions;
+- safe commands and dangerous commands;
+- architecture decisions;
+- runbooks and incident learnings;
+- environment observations;
+- user/team preferences;
+- what should never be persisted.
+
+Agent Memory Vault gives that context a safe home.
+
+## Before / After
+
+<table>
+<tr>
+<td width="50%">
+
+### Without durable memory
+
+Agent starts from chat history and repository files only.
+
+- Re-discovers the same context repeatedly.
+- Misses prior decisions.
+- Asks again for known procedures.
+- May trust stale notes over source truth.
+- Has no standard persistence gate.
+
+</td>
+<td width="50%">
+
+### With Agent Memory Vault
+
+Agent follows a repeatable memory protocol.
+
+- Reads relevant pack context first.
+- Checks source-of-truth files.
+- Uses runbooks and decisions.
+- Saves useful learnings safely.
+- Refuses secrets and sensitive data.
+
+</td>
+</tr>
+</table>
+
+**Same repository. Better continuity. Safer memory.**
+
+## What It Is
+
+| Piece | What it does |
+|---|---|
+| **Obsidian vault** | Human-readable Markdown memory with wikilinks. |
+| **Agent skill** | Teaches agents when and how to retrieve, evaluate, and persist memory. |
+| **Memory packs** | Local/private knowledge domains for projects, companies, clients, environments, or workflows. |
+| **Templates** | Starting points for context, actions, decisions, observations, runbooks, notes, and sessions. |
+| **Validation** | Lightweight checks for vault hygiene, wikilinks, frontmatter, and sensitive-value patterns. |
+
+## 5-Minute Quickstart
+
+### 1. Clone
+
+```bash
+git clone https://github.com/weauratech/agent-memory-vault.git
+cd agent-memory-vault
+```
+
+### 2. Install as a Pi package
 
 From a local clone:
 
@@ -60,20 +110,20 @@ From a local clone:
 pi install /path/to/agent-memory-vault
 ```
 
-From GitHub after publishing:
+Or directly from GitHub:
 
 ```bash
 pi install git:https://github.com/weauratech/agent-memory-vault
 ```
 
-## Open as an Obsidian vault
+### 3. Open in Obsidian
 
 1. Open Obsidian.
 2. Choose **Open folder as vault**.
 3. Select the `agent-memory-vault` folder.
-4. Start at `DASHBOARD.md`.
+4. Start at [`DASHBOARD.md`](DASHBOARD.md).
 
-## Create your first memory pack
+### 4. Create your first memory pack
 
 ```bash
 python3 scripts/new-pack.py my-project
@@ -85,17 +135,37 @@ Then edit:
 packs/my-project/00-system/pi-agent/memory-manifest.md
 ```
 
-## Core concepts
+### 5. Validate
 
-### Memory packs
+```bash
+python3 scripts/validate-vault.py
+```
 
-A pack is a folder of related memory, usually for a project, company, client, or domain.
+## What You Get
 
-Typical structure:
+| Feature | Included |
+|---|:---:|
+| Pi skill package | Yes |
+| Obsidian-compatible vault | Yes |
+| Local/private memory packs | Yes |
+| Pack scaffolding script | Yes |
+| Markdown templates | Yes |
+| Retrieval Gate | Yes |
+| Persistence Gate | Yes |
+| Structured Prompt Gate | Yes |
+| Source-of-truth rules | Yes |
+| Sensitive-data safety rules | Yes |
+| Lightweight validation script | Yes |
+
+## Core Concepts
+
+### Memory Packs
+
+A pack is a folder of related memory, usually for a project, company, client, domain, environment, or workflow.
 
 ```txt
 packs/<pack>/
-  00-system/       # manifests, protocols, indexes, ontology
+  00-system/       # manifests, protocols, indexes, resource maps
   10-user/         # safe user/team preferences and working agreements
   20-context/      # project/company/domain context packs
   30-projects/     # repositories and project maps
@@ -106,60 +176,179 @@ packs/<pack>/
   80-sessions/     # session handoffs
 ```
 
+By default, this repository ignores `packs/*` in Git. Your private/company memory stays local unless you intentionally change that behavior.
+
 ### Memory Gate
 
-The skill uses a Memory Gate:
+The skill uses a two-part Memory Gate:
 
-1. **Retrieval Gate** — before acting, consult relevant memory.
-2. **Persistence Gate** — after relevant work, decide whether new knowledge should be saved, proposed, or ignored.
+1. **Retrieval Gate** — before acting, identify relevant entities, choose the right pack, read manifests/indexes/context/runbooks, follow wikilinks, and consult source truth.
+2. **Persistence Gate** — after work, decide whether new knowledge should be saved, proposed for approval, or ignored.
 
 ### Structured Prompt Gate
 
-For non-trivial tasks, the skill can organize work using a lightweight REASONS-style structure:
+For non-trivial work, the skill can organize execution with a compact REASONS-style structure:
 
-- Requirements
-- Entities
-- Approach
-- Structure
-- Operations
-- Norms
-- Safeguards
+| Step | Meaning |
+|---|---|
+| Requirements | What problem is being solved? |
+| Entities | What people, projects, files, systems, or data are involved? |
+| Approach | What strategy will satisfy the requirements? |
+| Structure | Where does the change fit? |
+| Operations | What concrete steps should happen? |
+| Norms | Which conventions apply? |
+| Safeguards | What must not be violated? |
 
-This makes agent work more reviewable and less ad hoc.
+### Source of Truth
 
-## Safety rule
+Memory is guidance, not final authority.
 
-Never store:
+Preferred hierarchy:
 
-- secrets;
-- tokens;
-- passwords;
-- private keys;
-- credentials;
-- full payment card numbers;
-- sensitive customer data;
-- sensitive real payloads.
+1. Real code, configuration, deployment manifests, tests, and runtime facts.
+2. Formal contracts such as API specs and schemas.
+3. Official project documentation.
+4. Memory pack notes.
+5. Session history.
 
-Store only safe context and pointers to approved secret stores or procedures.
+If memory diverges from source truth, follow source truth and update or propose updating memory.
 
-## Validate the vault
+## What Should Be Stored?
+
+<table>
+<tr>
+<td width="50%">
+
+### Good memory
+
+- Project context
+- Safe user/team preferences
+- Repository maps
+- Source-of-truth pointers
+- Actions performed
+- Decisions and ADRs
+- Runbooks
+- Troubleshooting notes
+- Environment observations
+- Session handoffs
+
+</td>
+<td width="50%">
+
+### Never store
+
+- Secrets
+- Tokens
+- Passwords
+- Private keys
+- Credentials
+- Full payment card numbers
+- Sensitive customer data
+- Sensitive production payloads
+- Confidential third-party data you cannot store
+
+</td>
+</tr>
+</table>
+
+> [!IMPORTANT]
+> Agent Memory Vault is for safe operational context, not secret management. Store pointers to approved secret stores or procedures, never the secret values themselves.
+
+## Repository Layout
+
+```txt
+agent-memory-vault/
+  DASHBOARD.md                         # Obsidian entrypoint
+  README.md                            # GitHub/public entrypoint
+  AGENTS.md                            # Agent-facing repository instructions
+  docs/                                # Human documentation
+  packs/                               # User-created packs; ignored by Git by default
+  scripts/
+    new-pack.py                        # Create a new memory pack
+    validate-vault.py                  # Validate vault hygiene
+  skills/agent-memory-vault/
+    SKILL.md                           # Main agent skill
+    references/                        # Memory Gate, safety, source-truth, update protocols
+    templates/                         # Action, context, decision, observation, runbook, session templates
+```
+
+## Using It With an Agent
+
+After installing the Pi package, ask your agent to use the skill before durable-context work:
+
+```txt
+Use agent-memory-vault before working on this context. Tell me which notes and source-of-truth files you consulted.
+```
+
+The agent should:
+
+1. identify the relevant project/company/domain;
+2. read the corresponding pack;
+3. consult source-of-truth files when behavior matters;
+4. complete the task;
+5. evaluate whether useful new knowledge should be persisted.
+
+## Documentation
+
+| Doc | Purpose |
+|---|---|
+| [`docs/getting-started.md`](docs/getting-started.md) | First setup and basic workflow. |
+| [`docs/memory-packs.md`](docs/memory-packs.md) | Pack structure, wikilinks, frontmatter, freshness, and source truth. |
+| [`docs/security-policy.md`](docs/security-policy.md) | Safe persistence and sensitive-data rules. |
+| [`docs/structured-prompt-driven-development.md`](docs/structured-prompt-driven-development.md) | Structured Prompt Gate and REASONS-lite workflow. |
+| [`docs/contributing.md`](docs/contributing.md) | Contribution guidance. |
+| [`skills/agent-memory-vault/SKILL.md`](skills/agent-memory-vault/SKILL.md) | Main agent behavior contract. |
+
+## Safety Model
+
+Agent Memory Vault follows three core rules:
+
+1. **Memory does not override source truth.** Code, configs, tests, schemas, and official docs win.
+2. **Sensitive data is refused.** Secrets, credentials, and sensitive payloads must not be persisted.
+3. **Persistence is gated.** Agents save only safe, durable, useful, clear, attributable knowledge; ambiguous or high-impact changes require approval.
+
+Before publishing or sharing a vault, run:
+
+```bash
+python3 scripts/validate-vault.py
+rg -i "secret|token|password|credential|private key|api_key|akia" .
+```
+
+Review matches manually. Documentation may mention prohibited terms as examples; actual secret values are not acceptable.
+
+## Repository Status
+
+This repository is intentionally shipped with no private/company packs. It is a clean starter vault.
+
+Create your own packs under:
+
+```txt
+packs/<pack-slug>/
+```
+
+Because `packs/*` is ignored by default, personal or company memory is not accidentally committed to the public repository. If you intentionally want to version a pack, adjust `.gitignore` in your own fork or private repository first.
+
+## Contributing
+
+Contributions are welcome.
+
+Good contributions include:
+
+- clearer skill protocols;
+- safer templates;
+- better validation tooling;
+- documentation improvements;
+- generic examples that do not include private data;
+- compatibility notes for more agent harnesses.
+
+Before opening a PR:
 
 ```bash
 python3 scripts/validate-vault.py
 ```
 
-## Documentation
-
-- `docs/getting-started.md`
-- `docs/memory-packs.md`
-- `docs/security-policy.md`
-- `docs/contributing.md`
-- `skills/agent-memory-vault/SKILL.md`
-
-## Contributing
-
-Contributions are welcome. See `CONTRIBUTING.md` and `docs/contributing.md`.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`docs/contributing.md`](docs/contributing.md).
 
 ## License
 
-MIT. See `LICENSE`.
+MIT. See [`LICENSE`](LICENSE).
