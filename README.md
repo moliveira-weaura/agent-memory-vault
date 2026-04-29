@@ -17,6 +17,7 @@
 
 <p align="center">
   <a href="#why-agent-memory-vault">Why</a> •
+  <a href="#why-teams-adopt-agent-memory-vault">Team Value</a> •
   <a href="#before--after">Before/After</a> •
   <a href="#5-minute-quickstart">Quickstart</a> •
   <a href="#always-on-memory-gate">Always-On</a> •
@@ -48,6 +49,49 @@ AI coding agents are powerful, but they forget durable context between sessions:
 - what should never be persisted.
 
 Agent Memory Vault gives that context a safe home.
+
+## Why Teams Adopt Agent Memory Vault
+
+Agent Memory Vault turns scattered operational knowledge into reusable agent context. The value is not that it makes the model magically smarter; the value is that it prevents the agent from starting from zero every time.
+
+For teams, that means less time spent rediscovering context, fewer repeated questions, safer handling of sensitive information, and better continuity between sessions, repositories, people, and agents.
+
+| Team problem | How Agent Memory Vault helps |
+|---|---|
+| Agents repeatedly rediscover the same repository structure, commands, deploy flow, or environment details. | Store repository maps, runbooks, observations, and source-of-truth pointers once, then reuse them across sessions. |
+| Prior decisions get lost in chat history or stay in someone’s head. | Capture decisions as reviewable Markdown records with links, status, and context. |
+| Humans keep answering the same setup, access, deploy, or troubleshooting questions. | Move safe recurring answers into memory packs and runbooks that agents can consult before asking. |
+| Agent output needs repeated correction because project conventions were missed. | Give the agent local conventions, runbooks, architecture notes, and source-truth rules before it acts. |
+| Context does not survive handoffs between sessions or team members. | Use session notes, actions, observations, and decisions as durable handoff material. |
+| Teams worry about agents saving the wrong thing. | Apply a Persistence Gate that refuses secrets and sensitive data, and stores only safe operational context. |
+
+### How to measure the value
+
+Run a small pilot and compare similar tasks with and without Agent Memory Vault.
+
+| Metric | Expected direction | Why it matters |
+|---|---:|---|
+| Context discovery time | Down | Less time spent finding files, conventions, deploy paths, accounts, clusters, or runbooks. |
+| Prompts per task | Down | Fewer back-and-forth messages needed to reach useful output. |
+| Repeated questions | Down | Agents stop asking for information that has already been captured safely. |
+| Human corrections | Down | Fewer fixes caused by missing prior decisions or project conventions. |
+| First-pass success rate | Up | More tasks are useful on the first serious attempt. |
+| Knowledge reuse | Up | Existing decisions, runbooks, and observations are actively used instead of forgotten. |
+| Onboarding speed | Up | New agents and team members can start from shared context instead of tribal knowledge. |
+
+A simple ROI estimate:
+
+```txt
+hours saved per week = agent-assisted tasks per week × minutes saved per task ÷ 60
+```
+
+Example:
+
+```txt
+40 tasks/week × 10 minutes saved/task ÷ 60 = 6.6 hours saved/week
+```
+
+That estimate excludes harder-to-measure gains such as fewer production mistakes, fewer interruptions to senior engineers, faster incident recovery, better auditability, and reduced dependency on undocumented tribal knowledge.
 
 ## Before / After
 
