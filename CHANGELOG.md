@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - Always-On Memory Gate documentation and installation snippets.
+- Public decision records under `docs/decisions/`, starting with Always-On Memory Gate.
 
 ### Changed
 

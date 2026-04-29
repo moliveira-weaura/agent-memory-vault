@@ -51,6 +51,12 @@ Update or propose updates when there is durable knowledge:
 
 When creating or updating pack notes, keep writes graph-aware: add `pack/<slug>` and `agent-memory/<type>` tags, link to the pack manifest, link to the relevant type index, and update indexes with wikilinks.
 
+## Mirroring private product decisions to open source
+
+Private/local packs are ignored by Git. If a private memory decision affects public Agent Memory Vault behavior, protocol, docs, templates, validation, security posture, or contributor expectations, mirror it into the open-source repository as a safe public decision record under `docs/decisions/`.
+
+Public decision records must be generic and must not include private company/client context, secrets, credentials, sensitive payloads, or private memory pack details.
+
 Before committing, run:
 
 ```bash
