@@ -1,10 +1,19 @@
 # Memory Gate
 
-The Memory Gate is required for tasks involving durable user, project, company, repository, integration, environment, action, runbook, decision, incident, troubleshooting, or shared operational context.
+The Memory Gate is always on as a lightweight check.
+
+Every interaction gets two internal checks:
+
+1. **Before acting:** is durable memory relevant to this task?
+2. **Before finishing:** did this interaction produce safe durable knowledge?
+
+If no durable memory is relevant, continue normally and do not mention memory unless the user asked. If durable memory is relevant, apply the full Retrieval Gate and Persistence Gate.
+
+The full Memory Gate is required for tasks involving durable user, project, company, repository, integration, environment, action, runbook, decision, incident, troubleshooting, or shared operational context.
 
 ## 1. Retrieval Gate — before responding or acting
 
-Before responding, editing code, creating documentation, running impactful commands, or guiding a decision, the agent must check whether durable memory is relevant.
+Before responding, editing code, creating documentation, running impactful commands, or guiding a decision, the agent must run a lightweight relevance check for durable memory.
 
 If relevant, the agent should:
 
@@ -28,7 +37,7 @@ If no pack exists and durable context is likely, ask briefly whether to create a
 
 ## 2. Persistence Gate — after relevant work
 
-At the end of a relevant interaction, evaluate whether new or changed knowledge should be saved.
+At the end of every interaction, run a lightweight persistence check. At the end of a relevant interaction, evaluate whether new or changed knowledge should be saved.
 
 Default mode: **semi-automatic**.
 
@@ -112,7 +121,19 @@ Never persist secrets, tokens, passwords, private keys, credentials, full paymen
 
 Persist only safe operational context and pointers to approved secret stores or procedures.
 
-## 7. Traceability
+## 7. Response noise control
+
+Always-on memory should not make every response noisy.
+
+| Situation | Response behavior |
+|---|---|
+| Memory consulted | Briefly cite consulted notes/source-truth files. |
+| Memory saved | Briefly mention what was saved and where. |
+| Approval needed | Ask the short persistence approval question. |
+| No durable memory relevance | Do not mention memory unless the user asked. |
+| Sensitive data detected | Warn, avoid repeating it, and do not persist it. |
+
+## 8. Traceability
 
 Every persistence action should record enough source context, such as:
 

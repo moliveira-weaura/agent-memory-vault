@@ -2,6 +2,12 @@
 
 This protocol is the update side of the Persistence Gate.
 
+## Always-on persistence check
+
+Run a lightweight persistence check before the final response of every interaction.
+
+If no safe durable knowledge was introduced or changed, do nothing and keep the response quiet unless the user asked about memory. If safe durable knowledge appears, apply this update protocol.
+
 ## Default autonomy
 
 Default mode: **semi-automatic**.
@@ -11,6 +17,8 @@ The agent may persist automatically when the information is safe, non-sensitive,
 Ask for short approval when there is ambiguity, insufficient source, conflict with existing memory, significant impact on a procedure/decision/rule, or uncertainty about the destination.
 
 ## When to update
+
+The agent should detect these cases automatically; the user should not need to say “save this to memory.”
 
 Update memory when there is:
 
@@ -80,3 +88,9 @@ Can I update the runbook?
 ```
 
 Do not send long explanations or large diffs just to ask for persistence approval.
+
+## Response noise control
+
+- Mention memory when you saved something, need approval, consulted notes, found stale/divergent memory, or blocked persistence for safety.
+- Do not add “no memory updates” to every response by default.
+- If the user explicitly asks whether memory was used, explain the decision briefly.

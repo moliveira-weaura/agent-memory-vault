@@ -6,6 +6,7 @@ Welcome to **Agent Memory Vault** — a portable memory skill for AI coding agen
 
 - [[README|README]]
 - [[docs/getting-started|Getting Started]]
+- [[docs/always-on-memory-gate|Always-On Memory Gate]]
 - [[docs/memory-packs|Memory Packs]]
 - [[docs/security-policy|Security Policy]]
 - [[docs/contributing|Contributing]]
@@ -13,6 +14,7 @@ Welcome to **Agent Memory Vault** — a portable memory skill for AI coding agen
 
 ## Core references
 
+- [[docs/always-on-memory-gate|Always-On Memory Gate]]
 - [[skills/agent-memory-vault/references/memory-gate|Memory Gate]]
 - [[skills/agent-memory-vault/references/retrieval-protocol|Retrieval Protocol]]
 - [[skills/agent-memory-vault/references/update-protocol|Update Protocol]]

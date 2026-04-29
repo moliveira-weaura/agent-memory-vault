@@ -23,6 +23,8 @@ Do not store secrets, credentials, private keys, sensitive customer data, or sen
 
 Agent-readable guide: [`docs/ai-first-install.md`](ai-first-install.md).
 
+For reliability, Agent Memory Vault uses an Always-On Memory Gate: the agent checks for durable context before acting and checks whether safe durable knowledge should be persisted before finishing. See [`docs/always-on-memory-gate.md`](always-on-memory-gate.md).
+
 ## Manual install
 
 ### 1. Clone the repository

@@ -39,11 +39,20 @@ Memory packs live under:
 
 Resolve paths relative to this skill directory. If the expected path does not exist, locate the package root by finding a `package.json` with `name: "agent-memory-vault"`.
 
-## Memory Gate — required
+## Memory Gate — always-on
 
-Every task that involves durable user, project, company, repository, integration, environment, action, runbook, decision, incident, troubleshooting, or shared operational context must pass through the Memory Gate.
+The Memory Gate is always on as a lightweight check.
 
-Detailed reference: `references/memory-gate.md`.
+For every interaction, perform two quick internal checks:
+
+1. **Before acting:** is durable memory relevant to this task?
+2. **Before finishing:** did this interaction produce safe durable knowledge that should be persisted or proposed?
+
+If no durable memory is relevant, continue normally and do not mention memory unless the user asked. If durable memory is relevant, apply the Retrieval Gate and Persistence Gate below.
+
+Every task that involves durable user, project, company, repository, integration, environment, action, runbook, decision, incident, troubleshooting, or shared operational context must pass through the full Memory Gate.
+
+Detailed reference: `references/memory-gate.md`. User-facing setup guide: `../../docs/always-on-memory-gate.md`.
 
 ### Retrieval Gate — before responding or acting
 
@@ -86,7 +95,7 @@ Skip this gate for simple Q&A, quick lookups, and low-risk one-off tasks.
 
 ### Persistence Gate — after relevant work
 
-At the end of relevant interactions, evaluate whether new or changed knowledge should be persisted.
+At the end of every interaction, run a lightweight persistence check. For relevant interactions, evaluate whether new or changed knowledge should be persisted.
 
 Default mode: **semi-automatic**.
 
@@ -113,6 +122,8 @@ Can I update the runbook?
 ```
 
 Do not send long text, large diffs, or repeated context just to ask for persistence approval.
+
+Keep responses quiet when there is no memory action. Mention memory when notes were consulted, source-truth was checked, memory was saved, persistence approval is needed, or safety blocked persistence.
 
 ## Source-of-truth rules
 

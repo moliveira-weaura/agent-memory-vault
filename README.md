@@ -19,6 +19,7 @@
   <a href="#why-agent-memory-vault">Why</a> •
   <a href="#before--after">Before/After</a> •
   <a href="#5-minute-quickstart">Quickstart</a> •
+  <a href="#always-on-memory-gate">Always-On</a> •
   <a href="#core-concepts">Concepts</a> •
   <a href="#safety-model">Safety</a> •
   <a href="#documentation">Docs</a>
@@ -31,7 +32,7 @@ Agent Memory Vault is an open-source, AI-first memory system for coding agents a
 Instead of relying only on chat history, agents can work from reviewable, version-controlled Markdown memory.
 
 ```txt
-Prompt → Retrieval Gate → Source truth → Work → Persistence Gate → Memory update
+Every prompt → Memory relevance check → Work → Persistence check → Safe memory update when useful
 ```
 
 ## Why Agent Memory Vault?
@@ -92,6 +93,28 @@ Agent follows a repeatable memory protocol.
 | **Memory packs** | Local/private knowledge domains for projects, companies, clients, environments, or workflows. |
 | **Templates** | Starting points for context, actions, decisions, observations, runbooks, notes, and sessions. |
 | **Validation** | Lightweight checks for vault hygiene, wikilinks, frontmatter, and sensitive-value patterns. |
+
+## Always-On Memory Gate
+
+Agent Memory Vault is meant to detect durable context automatically. Users should not need to say “save this to memory” every time.
+
+Always-On Memory Gate means the agent performs two lightweight checks on every interaction:
+
+```txt
+Before acting: is durable memory relevant?
+Before finishing: did this produce safe durable knowledge?
+```
+
+If the answer is no, the agent stays quiet. If the answer is yes, it retrieves relevant memory, checks source truth when needed, and saves or proposes safe durable updates.
+
+Examples of context the agent should catch automatically:
+
+- “This GitHub organization maps to this company.”
+- “Always use this GitHub account for this org.”
+- “These AWS profiles belong to this environment.”
+- “This is the safe runbook for deploys.”
+
+See [`docs/always-on-memory-gate.md`](docs/always-on-memory-gate.md).
 
 ## 5-Minute Quickstart
 
@@ -175,6 +198,7 @@ Open the repo in Obsidian and start at [`DASHBOARD.md`](DASHBOARD.md).
 | Pack scaffolding script | Yes |
 | Graph-aware Markdown templates | Yes |
 | Optional Obsidian Graph View sync | Yes |
+| Always-On Memory Gate | Yes |
 | Retrieval Gate | Yes |
 | Persistence Gate | Yes |
 | Structured Prompt Gate | Yes |
@@ -205,10 +229,12 @@ By default, this repository ignores `packs/*` in Git. Your private/company memor
 
 ### Memory Gate
 
-The skill uses a two-part Memory Gate:
+The skill uses an always-on, two-part Memory Gate:
 
 1. **Retrieval Gate** — before acting, identify relevant entities, choose the right pack, read manifests/indexes/context/runbooks, follow wikilinks, and consult source truth.
-2. **Persistence Gate** — after work, decide whether new knowledge should be saved, proposed for approval, or ignored.
+2. **Persistence Gate** — before finishing, decide whether new knowledge should be saved, proposed for approval, or ignored.
+
+Always-on does not mean every response becomes noisy. The agent mentions memory when it consulted notes, saved knowledge, needs approval, or blocked persistence for safety.
 
 ### Structured Prompt Gate
 
@@ -321,6 +347,7 @@ The agent should:
 |---|---|
 | [`docs/ai-first-install.md`](docs/ai-first-install.md) | Agent-readable installer guide for Pi, Claude Code, OpenCode, and other agents. |
 | [`docs/getting-started.md`](docs/getting-started.md) | First setup and basic workflow. |
+| [`docs/always-on-memory-gate.md`](docs/always-on-memory-gate.md) | How agents detect and persist durable context without being explicitly asked each time. |
 | [`docs/memory-packs.md`](docs/memory-packs.md) | Pack structure, wikilinks, frontmatter, freshness, and source truth. |
 | [`docs/security-policy.md`](docs/security-policy.md) | Safe persistence and sensitive-data rules. |
 | [`docs/structured-prompt-driven-development.md`](docs/structured-prompt-driven-development.md) | Structured Prompt Gate and REASONS-lite workflow. |

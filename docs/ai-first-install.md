@@ -10,7 +10,7 @@ Supported targets:
 - Claude Code
 - OpenCode
 
-If the environment is not one of those targets, install the repository locally and wire the current agent's instruction file to read `skills/agent-memory-vault/SKILL.md` before durable-context work.
+If the environment is not one of those targets, install the repository locally and wire the current agent's instruction file to read `skills/agent-memory-vault/SKILL.md` and use the Always-On Memory Gate.
 
 ## Installation rules
 
@@ -96,17 +96,19 @@ Suggested snippet:
 ```md
 ## Agent Memory Vault
 
-Before work involving durable user, project, company, repository, integration, environment, action, runbook, decision, incident, troubleshooting, or shared operational context, read:
+Read:
 
 `~/.agent-memory-vault/skills/agent-memory-vault/SKILL.md`
 
-Use its Memory Gate:
+Use Agent Memory Vault Always-On Memory Gate:
 
-1. Retrieval Gate before acting.
-2. Source-of-truth check when behavior matters.
-3. Persistence Gate after relevant work.
+1. Before acting, check whether durable memory is relevant.
+2. If relevant, run the Retrieval Gate and consult source truth when behavior matters.
+3. Before finishing, check whether safe durable knowledge should be persisted.
+4. Persist automatically when safe, durable, clear, attributable, and obvious in destination.
+5. Ask brief approval when ambiguous, high-impact, conflicting, or destination is unclear.
 
-Never persist secrets or sensitive data.
+Keep responses quiet when no memory action is needed. Never persist secrets or sensitive data.
 ```
 
 ### Option C — OpenCode
@@ -136,17 +138,19 @@ Suggested snippet:
 ```md
 ## Agent Memory Vault
 
-Before work involving durable user, project, company, repository, integration, environment, action, runbook, decision, incident, troubleshooting, or shared operational context, read:
+Read:
 
 `~/.agent-memory-vault/skills/agent-memory-vault/SKILL.md`
 
-Use its Memory Gate:
+Use Agent Memory Vault Always-On Memory Gate:
 
-1. Retrieval Gate before acting.
-2. Source-of-truth check when behavior matters.
-3. Persistence Gate after relevant work.
+1. Before acting, check whether durable memory is relevant.
+2. If relevant, run the Retrieval Gate and consult source truth when behavior matters.
+3. Before finishing, check whether safe durable knowledge should be persisted.
+4. Persist automatically when safe, durable, clear, attributable, and obvious in destination.
+5. Ask brief approval when ambiguous, high-impact, conflicting, or destination is unclear.
 
-Never persist secrets or sensitive data.
+Keep responses quiet when no memory action is needed. Never persist secrets or sensitive data.
 ```
 
 ## Step 3 — Verify
@@ -197,9 +201,10 @@ Instruction file updated: <path or "not needed for Pi">
 Verification: <what you checked>
 
 What is active now:
-- Retrieval Gate before durable-context work.
+- Always-On Memory Gate for every interaction.
+- Retrieval Gate when durable context is relevant.
 - Source-of-truth check when code/config/API behavior matters.
-- Persistence Gate after relevant work.
+- Persistence Gate before finishing responses.
 - Secrets and sensitive data will not be persisted.
 
 Next step:
