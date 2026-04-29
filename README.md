@@ -61,7 +61,7 @@ pi install /path/to/agent-memory-vault
 From GitHub after publishing:
 
 ```bash
-pi install git:https://github.com/<owner>/agent-memory-vault
+pi install git:https://github.com/weauratech/agent-memory-vault
 ```
 
 ## Open as an Obsidian vault

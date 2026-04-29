@@ -13,7 +13,7 @@ Thanks for considering a contribution.
 ## Development setup
 
 ```bash
-git clone https://github.com/<owner>/agent-memory-vault.git
+git clone https://github.com/weauratech/agent-memory-vault.git
 cd agent-memory-vault
 python3 scripts/validate-vault.py
 ```

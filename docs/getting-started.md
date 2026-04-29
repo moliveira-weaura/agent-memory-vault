@@ -5,7 +5,7 @@ Agent Memory Vault can be used as both an Obsidian vault and an AI-agent skill p
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/<owner>/agent-memory-vault.git
+git clone https://github.com/weauratech/agent-memory-vault.git
 cd agent-memory-vault
 ```
 

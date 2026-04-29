@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: Security issue
-    url: https://github.com/<owner>/agent-memory-vault/security/advisories/new
+    url: https://github.com/weauratech/agent-memory-vault/security/advisories/new
     about: Please report security issues privately when GitHub private vulnerability reporting is enabled.
