@@ -16,7 +16,7 @@ This repository is an AI-first memory vault and skill package.
 - Skill: `skills/agent-memory-vault/SKILL.md`
 - Memory Gate: `skills/agent-memory-vault/references/memory-gate.md`
 - Structured Prompt Gate: `skills/agent-memory-vault/references/structured-prompt-gate.md`
-- Pack template: `skills/agent-memory-vault/templates/pack/`
+- Note templates: `skills/agent-memory-vault/templates/`
 
 ## Safety
 
@@ -37,6 +37,8 @@ Update or propose updates when there is durable knowledge:
 - docs-vs-code divergence;
 - incident/troubleshooting learning;
 - runbook-worthy procedure.
+
+When creating or updating pack notes, keep writes graph-aware: add `pack/<slug>` and `agent-memory/<type>` tags, link to the pack manifest, link to the relevant type index, and update indexes with wikilinks.
 
 Before committing, run:
 

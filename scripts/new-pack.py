@@ -92,8 +92,11 @@ This pack stores safe durable context for `{slug}`.
 
 - [[packs/{slug}/00-system/indexes/context-index|Context Index]]
 - [[packs/{slug}/00-system/indexes/project-index|Project Index]]
+- [[packs/{slug}/00-system/indexes/action-index|Action Index]]
 - [[packs/{slug}/00-system/indexes/decision-index|Decision Index]]
+- [[packs/{slug}/00-system/indexes/observation-index|Observation Index]]
 - [[packs/{slug}/00-system/indexes/runbook-index|Runbook Index]]
+- [[packs/{slug}/00-system/indexes/session-index|Session Index]]
 
 ## Safety
 
@@ -157,8 +160,11 @@ Personal machine paths may be stored in `00-system/local/resource-map.local.md`,
     indexes = {
         "context-index.md": "Context Index",
         "project-index.md": "Project Index",
+        "action-index.md": "Action Index",
         "decision-index.md": "Decision Index",
+        "observation-index.md": "Observation Index",
         "runbook-index.md": "Runbook Index",
+        "session-index.md": "Session Index",
     }
     for filename, heading in indexes.items():
         write(pack / "00-system/indexes" / filename, f"""---
@@ -189,9 +195,12 @@ status: active
 source_of_truth: false
 freshness: current
 last_reviewed: {TODAY}
+related_notes:
+  - "[[packs/{slug}/00-system/pi-agent/memory-manifest|{title} Memory Manifest]]"
+  - "[[packs/{slug}/00-system/indexes/context-index|Context Index]]"
 tags:
-  - agent-memory/context-pack
   - pack/{slug}
+  - agent-memory/context-pack
 ---
 
 # Context Pack — {title}
@@ -206,7 +215,8 @@ tags:
 
 ## Related
 
-- Manifest: [[packs/{slug}/00-system/pi-agent/memory-manifest|{title} Memory Manifest]]
+- Pack: [[packs/{slug}/00-system/pi-agent/memory-manifest|{title} Memory Manifest]]
+- Index: [[packs/{slug}/00-system/indexes/context-index|Context Index]]
 """)
 
     print(f"Created pack: packs/{slug}")

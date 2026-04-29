@@ -150,10 +150,11 @@ git clone https://github.com/weauratech/agent-memory-vault.git
 cd agent-memory-vault
 ```
 
-Create your first memory pack:
+Create your first memory pack and optionally sync local Obsidian Graph View color groups:
 
 ```bash
 python3 scripts/new-pack.py my-project
+python3 scripts/sync-obsidian-graph.py
 ```
 
 Then start at:
@@ -172,7 +173,8 @@ Open the repo in Obsidian and start at [`DASHBOARD.md`](DASHBOARD.md).
 | Obsidian-compatible vault | Yes |
 | Local/private memory packs | Yes |
 | Pack scaffolding script | Yes |
-| Markdown templates | Yes |
+| Graph-aware Markdown templates | Yes |
+| Optional Obsidian Graph View sync | Yes |
 | Retrieval Gate | Yes |
 | Persistence Gate | Yes |
 | Structured Prompt Gate | Yes |
@@ -288,6 +290,7 @@ agent-memory-vault/
   packs/                               # User-created packs; ignored by Git by default
   scripts/
     new-pack.py                        # Create a new memory pack
+    sync-obsidian-graph.py             # Generate local Obsidian graph color groups
     validate-vault.py                  # Validate vault hygiene
   skills/agent-memory-vault/
     SKILL.md                           # Main agent skill
@@ -309,7 +312,8 @@ The agent should:
 2. read the corresponding pack;
 3. consult source-of-truth files when behavior matters;
 4. complete the task;
-5. evaluate whether useful new knowledge should be persisted.
+5. evaluate whether useful new knowledge should be persisted;
+6. write memory notes with pack/type tags, manifest links, type-index links, and updated indexes.
 
 ## Documentation
 

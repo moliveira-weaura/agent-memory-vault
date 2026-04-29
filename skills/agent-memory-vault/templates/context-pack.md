@@ -1,12 +1,16 @@
 ---
 type: context-pack
-id: context.<slug>
+id: context.<pack-slug>.<slug>
 title: Context Pack — <Title>
 status: active
 source_of_truth: false
 freshness: current
 last_reviewed: <YYYY-MM-DD>
+related_notes:
+  - "[[packs/<pack-slug>/00-system/pi-agent/memory-manifest|<Pack Title> Memory Manifest]]"
+  - "[[packs/<pack-slug>/00-system/indexes/context-index|Context Index]]"
 tags:
+  - pack/<pack-slug>
   - agent-memory/context-pack
 ---
 
@@ -18,7 +22,7 @@ tags:
 
 ## Read first
 
-- <Source-of-truth file or memory note.>
+- [[packs/<pack-slug>/00-system/pi-agent/memory-manifest|<Pack Title> Memory Manifest]]
 
 ## Key facts
 
@@ -30,4 +34,5 @@ tags:
 
 ## Related
 
-- <Add Obsidian wikilinks here.>
+- Pack: [[packs/<pack-slug>/00-system/pi-agent/memory-manifest|<Pack Title> Memory Manifest]]
+- Index: [[packs/<pack-slug>/00-system/indexes/context-index|Context Index]]

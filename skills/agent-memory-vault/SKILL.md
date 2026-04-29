@@ -143,7 +143,7 @@ Never store:
 
 Store only safe operational context and pointers to approved secret stores or procedures.
 
-## Obsidian links
+## Obsidian links and graph-aware writes
 
 Use Obsidian wikilinks for relationships:
 
@@ -156,7 +156,19 @@ Rules:
 - paths are relative to the vault root;
 - omit `.md` extensions;
 - use a readable alias after `|`;
-- add `## Related` sections when a note connects to another user, project, runbook, action, decision, or observation.
+- add `## Related` sections when a note connects to another user, project, runbook, action, decision, observation, or session.
+
+When creating or updating notes inside `packs/<pack-slug>/`, preserve a useful Obsidian graph topology:
+
+1. infer the pack slug from the path;
+2. infer the note type from frontmatter `type` or the containing directory;
+3. include `pack/<pack-slug>` and `agent-memory/<type>` tags;
+4. link the note to the pack manifest;
+5. link the note to the relevant type index when one exists;
+6. add new notes to the relevant type index using Obsidian wikilinks;
+7. keep durable relationships in `related_notes` frontmatter and/or `## Related`.
+
+This graph-aware write standard must be defined by this skill, references, templates, and pack scaffolding. Do not rely on private/local packs or local observations to define global behavior.
 
 ## How to respond after using memory
 

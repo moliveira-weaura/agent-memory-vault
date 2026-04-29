@@ -19,6 +19,7 @@
   },
   "scripts": {
     "check": "python3 scripts/validate-vault.py",
-    "new-pack": "python3 scripts/new-pack.py"
+    "new-pack": "python3 scripts/new-pack.py",
+    "sync-graph": "python3 scripts/sync-obsidian-graph.py"
   }
 }

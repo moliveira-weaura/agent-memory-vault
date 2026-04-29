@@ -28,6 +28,7 @@ Create your first pack with:
 
 ```bash
 python3 scripts/new-pack.py my-company
+python3 scripts/sync-obsidian-graph.py
 ```
 
 Then open:

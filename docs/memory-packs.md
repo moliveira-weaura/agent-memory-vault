@@ -26,8 +26,11 @@ packs/<pack>/
     indexes/
       context-index.md
       project-index.md
+      action-index.md
       decision-index.md
+      observation-index.md
       runbook-index.md
+      session-index.md
   10-user/
   20-context/
   30-projects/
@@ -62,7 +65,7 @@ Bad candidates:
 - temporary speculation;
 - information you cannot safely publish or share with intended collaborators.
 
-## Obsidian links
+## Obsidian links and graph-friendly writes
 
 Use wikilinks relative to the vault root:
 
@@ -77,6 +80,24 @@ Rules:
 - use a human-readable alias after `|`;
 - add `## Related` sections where useful;
 - keep indexes linked with wikilinks.
+
+Agent Memory Vault writes should be graph-aware by default. New or updated pack notes should:
+
+- include `pack/<pack>` and `agent-memory/<type>` tags;
+- link to the pack manifest;
+- link to the relevant type index when one exists;
+- be added to the relevant type index;
+- keep durable relationships in `related_notes` frontmatter and/or `## Related`.
+
+This makes Obsidian Graph View useful through portable Markdown instead of relying only on local Obsidian settings.
+
+To optionally generate local Graph View color groups from existing packs, run:
+
+```bash
+python3 scripts/sync-obsidian-graph.py
+```
+
+Use `--mode types` or `--mode hybrid` to color by note type or both packs and types.
 
 ## Frontmatter
 

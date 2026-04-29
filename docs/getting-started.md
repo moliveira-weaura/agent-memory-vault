@@ -56,6 +56,7 @@ skills/agent-memory-vault/SKILL.md
 
 ```bash
 python3 scripts/new-pack.py my-project
+python3 scripts/sync-obsidian-graph.py
 ```
 
 This creates:

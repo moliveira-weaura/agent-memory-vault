@@ -1,12 +1,16 @@
 ---
 type: action
-id: action.<YYYY-MM-DD>-<slug>
+id: action.<pack-slug>.<YYYY-MM-DD>-<slug>
 title: <Action title>
 status: completed
 source_of_truth: false
 freshness: current
 last_reviewed: <YYYY-MM-DD>
+related_notes:
+  - "[[packs/<pack-slug>/00-system/pi-agent/memory-manifest|<Pack Title> Memory Manifest]]"
+  - "[[packs/<pack-slug>/00-system/indexes/action-index|Action Index]]"
 tags:
+  - pack/<pack-slug>
   - agent-memory/action
 ---
 
@@ -26,4 +30,5 @@ tags:
 
 ## Related
 
-- <Add Obsidian wikilinks here.>
+- Pack: [[packs/<pack-slug>/00-system/pi-agent/memory-manifest|<Pack Title> Memory Manifest]]
+- Index: [[packs/<pack-slug>/00-system/indexes/action-index|Action Index]]

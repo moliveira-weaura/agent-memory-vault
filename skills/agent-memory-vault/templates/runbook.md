@@ -1,12 +1,16 @@
 ---
 type: runbook
-id: runbook.<slug>
+id: runbook.<pack-slug>.<slug>
 title: <Runbook title>
 status: active
 source_of_truth: true
 freshness: current
 last_reviewed: <YYYY-MM-DD>
+related_notes:
+  - "[[packs/<pack-slug>/00-system/pi-agent/memory-manifest|<Pack Title> Memory Manifest]]"
+  - "[[packs/<pack-slug>/00-system/indexes/runbook-index|Runbook Index]]"
 tags:
+  - pack/<pack-slug>
   - agent-memory/runbook
 ---
 
@@ -40,4 +44,5 @@ tags:
 
 ## Related
 
-- <Add Obsidian wikilinks here.>
+- Pack: [[packs/<pack-slug>/00-system/pi-agent/memory-manifest|<Pack Title> Memory Manifest]]
+- Index: [[packs/<pack-slug>/00-system/indexes/runbook-index|Runbook Index]]

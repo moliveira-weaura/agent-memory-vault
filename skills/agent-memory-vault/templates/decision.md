@@ -1,12 +1,16 @@
 ---
 type: decision
-id: decision.<YYYY-MM-DD>-<slug>
+id: decision.<pack-slug>.<YYYY-MM-DD>-<slug>
 title: <Decision title>
 status: proposed
 source_of_truth: true
 freshness: current
 last_reviewed: <YYYY-MM-DD>
+related_notes:
+  - "[[packs/<pack-slug>/00-system/pi-agent/memory-manifest|<Pack Title> Memory Manifest]]"
+  - "[[packs/<pack-slug>/00-system/indexes/decision-index|Decision Index]]"
 tags:
+  - pack/<pack-slug>
   - agent-memory/decision
 ---
 
@@ -34,4 +38,5 @@ proposed | accepted | superseded | deprecated
 
 ## Related
 
-- <Add Obsidian wikilinks here.>
+- Pack: [[packs/<pack-slug>/00-system/pi-agent/memory-manifest|<Pack Title> Memory Manifest]]
+- Index: [[packs/<pack-slug>/00-system/indexes/decision-index|Decision Index]]
