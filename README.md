@@ -120,25 +120,9 @@ See [`docs/always-on-memory-gate.md`](docs/always-on-memory-gate.md).
 
 Agent Memory Vault is **AI-first**: the easiest install path is to ask your coding agent to install it for itself.
 
-### Option A: Install with skills.sh
+### 1. Copy this prompt into your agent
 
-Use the generic `skills` CLI:
-
-```bash
-npx skills add weauratech/agent-memory-vault --skill agent-memory-vault
-```
-
-Global/non-interactive install:
-
-```bash
-npx skills add weauratech/agent-memory-vault --skill agent-memory-vault --global --yes
-```
-
-See [`docs/skills-sh.md`](docs/skills-sh.md) for verification and release notes.
-
-### Option B: Ask your agent to install it
-
-Copy this prompt into Claude Code, OpenCode, Pi, or another coding agent:
+Use this with Claude Code, OpenCode, Pi, or another coding agent:
 
 ```txt
 Install Agent Memory Vault for this agent environment.
@@ -153,7 +137,7 @@ After installing, verify the skill is readable and respond with the welcome temp
 Do not store secrets, credentials, private keys, sensitive customer data, or sensitive payloads.
 ```
 
-### What your agent will do
+### 2. What your agent will do
 
 | Target | Install behavior |
 |---|---|
@@ -174,7 +158,7 @@ Instruction file updated: <path or "not needed for Pi">
 Verification: <what was checked>
 ```
 
-### Want to install manually?
+### 3. Want to install manually?
 
 Pi one-liner:
 
@@ -362,7 +346,6 @@ The agent should:
 | Doc | Purpose |
 |---|---|
 | [`docs/ai-first-install.md`](docs/ai-first-install.md) | Agent-readable installer guide for Pi, Claude Code, OpenCode, and other agents. |
-| [`docs/skills-sh.md`](docs/skills-sh.md) | Installing and promoting Agent Memory Vault through skills.sh / the `skills` CLI. |
 | [`docs/getting-started.md`](docs/getting-started.md) | First setup and basic workflow. |
 | [`docs/always-on-memory-gate.md`](docs/always-on-memory-gate.md) | How agents detect and persist durable context without being explicitly asked each time. |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Public decision records for product, protocol, documentation, and contributor-facing decisions. |

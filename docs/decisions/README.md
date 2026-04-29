@@ -61,5 +61,4 @@ What did we decide?
 
 | Decision | Status | Summary |
 |---|---|---|
-| [0002 — skills.sh Distribution Channel](0002-skills-sh-distribution.md) | Accepted | Agent Memory Vault uses skills.sh / the `skills` CLI as a public distribution channel. |
 | [0001 — Always-On Memory Gate](0001-always-on-memory-gate.md) | Accepted | Agents perform lightweight memory relevance and persistence checks on every interaction. |
