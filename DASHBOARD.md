@@ -7,6 +7,7 @@ Welcome to **Agent Memory Vault** — a portable memory skill for AI coding agen
 - [[README|README]]
 - [[docs/getting-started|Getting Started]]
 - [[docs/always-on-memory-gate|Always-On Memory Gate]]
+- [[docs/skills-sh|Publishing on skills.sh]]
 - [[docs/decisions/README|Decision Records]]
 - [[docs/memory-packs|Memory Packs]]
 - [[docs/security-policy|Security Policy]]
@@ -17,6 +18,7 @@ Welcome to **Agent Memory Vault** — a portable memory skill for AI coding agen
 
 - [[docs/always-on-memory-gate|Always-On Memory Gate]]
 - [[docs/decisions/0001-always-on-memory-gate|Decision 0001 — Always-On Memory Gate]]
+- [[docs/decisions/0002-skills-sh-distribution|Decision 0002 — skills.sh Distribution Channel]]
 - [[skills/agent-memory-vault/references/memory-gate|Memory Gate]]
 - [[skills/agent-memory-vault/references/retrieval-protocol|Retrieval Protocol]]
 - [[skills/agent-memory-vault/references/update-protocol|Update Protocol]]
