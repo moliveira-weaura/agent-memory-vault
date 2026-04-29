@@ -95,51 +95,74 @@ Agent follows a repeatable memory protocol.
 
 ## 5-Minute Quickstart
 
-### 1. Clone
+Agent Memory Vault is **AI-first**: the easiest install path is to ask your coding agent to install it for itself.
+
+### 1. Copy this prompt into your agent
+
+Use this with Claude Code, OpenCode, Pi, or another coding agent:
+
+```txt
+Install Agent Memory Vault for this agent environment.
+
+Read and follow the AI-first installer guide:
+https://raw.githubusercontent.com/weauratech/agent-memory-vault/main/docs/ai-first-install.md
+
+Target this current environment first. If Pi is available, use the Pi package install. If this is Claude Code or OpenCode, clone the repository locally and wire the agent instruction file to read the Agent Memory Vault skill before durable-context work.
+
+After installing, verify the skill is readable and respond with the welcome template from the installer guide.
+
+Do not store secrets, credentials, private keys, sensitive customer data, or sensitive payloads.
+```
+
+### 2. What your agent will do
+
+| Target | Install behavior |
+|---|---|
+| **Pi** | Installs the package with `pi install git:https://github.com/weauratech/agent-memory-vault`. |
+| **Claude Code** | Clones the repo locally and wires `CLAUDE.md` to read `skills/agent-memory-vault/SKILL.md`. |
+| **OpenCode** | Clones the repo locally and wires `AGENTS.md` or the active OpenCode instruction file to read the skill. |
+
+The agent will verify the install and return a welcome message like:
+
+```txt
+✅ Agent Memory Vault installed.
+
+Welcome to durable agent memory.
+
+Target: <Pi | Claude Code | OpenCode | Other>
+Skill source: <installed package path or local clone path>
+Instruction file updated: <path or "not needed for Pi">
+Verification: <what was checked>
+```
+
+### 3. Want to install manually?
+
+Pi one-liner:
+
+```bash
+pi install git:https://github.com/weauratech/agent-memory-vault
+```
+
+Local clone:
 
 ```bash
 git clone https://github.com/weauratech/agent-memory-vault.git
 cd agent-memory-vault
 ```
 
-### 2. Install as a Pi package
-
-From a local clone:
-
-```bash
-pi install /path/to/agent-memory-vault
-```
-
-Or directly from GitHub:
-
-```bash
-pi install git:https://github.com/weauratech/agent-memory-vault
-```
-
-### 3. Open in Obsidian
-
-1. Open Obsidian.
-2. Choose **Open folder as vault**.
-3. Select the `agent-memory-vault` folder.
-4. Start at [`DASHBOARD.md`](DASHBOARD.md).
-
-### 4. Create your first memory pack
+Create your first memory pack:
 
 ```bash
 python3 scripts/new-pack.py my-project
 ```
 
-Then edit:
+Then start at:
 
 ```txt
 packs/my-project/00-system/pi-agent/memory-manifest.md
 ```
 
-### 5. Validate
-
-```bash
-python3 scripts/validate-vault.py
-```
+Open the repo in Obsidian and start at [`DASHBOARD.md`](DASHBOARD.md).
 
 ## What You Get
 
@@ -292,6 +315,7 @@ The agent should:
 
 | Doc | Purpose |
 |---|---|
+| [`docs/ai-first-install.md`](docs/ai-first-install.md) | Agent-readable installer guide for Pi, Claude Code, OpenCode, and other agents. |
 | [`docs/getting-started.md`](docs/getting-started.md) | First setup and basic workflow. |
 | [`docs/memory-packs.md`](docs/memory-packs.md) | Pack structure, wikilinks, frontmatter, freshness, and source truth. |
 | [`docs/security-policy.md`](docs/security-policy.md) | Safe persistence and sensitive-data rules. |
