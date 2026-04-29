@@ -18,6 +18,62 @@ This skill teaches the agent to:
 - persist or propose updates when new durable knowledge appears;
 - keep runbooks, decisions, actions, observations, and session handoffs useful over time.
 
+## Why Agent Memory Vault?
+
+AI coding agents are powerful, but they forget durable context between sessions:
+
+- project structure and conventions;
+- safe commands and dangerous commands;
+- architecture decisions;
+- runbooks and incident learnings;
+- environment observations;
+- user/team preferences;
+- what should never be persisted.
+
+Agent Memory Vault gives that context a safe, local-first home. Instead of relying only on chat history, agents can work from reviewable Markdown memory that humans can inspect, edit, version, and open in Obsidian.
+
+## Why teams adopt it
+
+Agent Memory Vault turns scattered operational knowledge into reusable agent context. The value is not that it makes the model magically smarter; the value is that it prevents the agent from starting from zero every time.
+
+| Team problem | How Agent Memory Vault helps |
+|---|---|
+| Agents repeatedly rediscover the same repository structure, commands, deploy flow, or environment details. | Store repository maps, runbooks, observations, and source-of-truth pointers once, then reuse them across sessions. |
+| Prior decisions get lost in chat history or stay in someone’s head. | Capture decisions as reviewable Markdown records with links, status, and context. |
+| Humans keep answering the same setup, access, deploy, or troubleshooting questions. | Move safe recurring answers into memory packs and runbooks that agents can consult before asking. |
+| Agent output needs repeated correction because project conventions were missed. | Give the agent local conventions, runbooks, architecture notes, and source-truth rules before it acts. |
+| Context does not survive handoffs between sessions or team members. | Use session notes, actions, observations, and decisions as durable handoff material. |
+| Teams worry about agents saving the wrong thing. | Apply a Persistence Gate that refuses secrets and sensitive data, and stores only safe operational context. |
+
+### Measurable adoption signals
+
+Run a small pilot and compare similar tasks with and without Agent Memory Vault.
+
+| Metric | Expected direction | Why it matters |
+|---|---:|---|
+| Context discovery time | Down | Less time spent finding files, conventions, deploy paths, accounts, clusters, or runbooks. |
+| Prompts per task | Down | Fewer back-and-forth messages needed to reach useful output. |
+| Repeated questions | Down | Agents stop asking for information that has already been captured safely. |
+| Human corrections | Down | Fewer fixes caused by missing prior decisions or project conventions. |
+| First-pass success rate | Up | More tasks are useful on the first serious attempt. |
+| Knowledge reuse | Up | Existing decisions, runbooks, and observations are actively used instead of forgotten. |
+| Onboarding speed | Up | New agents and team members can start from shared context instead of tribal knowledge. |
+
+Simple ROI estimate:
+
+```txt
+hours saved per week = agent-assisted tasks per week × minutes saved per task ÷ 60
+```
+
+## What you get
+
+- **Always-On Memory Gate** — lightweight relevance and persistence checks for every interaction.
+- **Retrieval Gate** — read the right pack, notes, runbooks, decisions, and source-truth files before acting.
+- **Persistence Gate** — save safe durable knowledge and refuse secrets or sensitive data.
+- **Memory packs** — local/private knowledge domains for projects, companies, clients, environments, or workflows.
+- **Graph-aware Markdown notes** — context, actions, decisions, observations, runbooks, notes, and sessions linked for humans and agents.
+- **Source-of-truth rules** — memory guides the agent but code, configs, tests, schemas, and runtime facts win.
+
 ## Repository layout
 
 The package root contains:

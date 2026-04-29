@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Always-On Memory Gate documentation and installation snippets.
 - Public decision records under `docs/decisions/`, starting with Always-On Memory Gate.
 - README section explaining team adoption value, measurement metrics, and simple ROI model.
+- Skill landing content aligned with README value proposition for skills.sh rendering.
 
 ### Changed
 
