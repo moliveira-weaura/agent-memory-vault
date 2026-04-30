@@ -37,13 +37,16 @@ const PACK_PATH = path.join(PACKS_DIR, PACK_NAME);
 function createMockPi() {
 	const tools: Record<string, any> = {};
 	const hooks: Record<string, (...args: unknown[]) => unknown> = {};
+	const commands: Record<string, any> = {};
 	return {
 		pi: {
 			registerTool(def: any) { tools[def.name] = def; },
 			on(event: string, handler: (...args: unknown[]) => unknown) { hooks[event] = handler; },
+			registerCommand(name: string, def: any) { commands[name] = def; },
 		},
 		tools,
 		hooks,
+		commands,
 	};
 }
 

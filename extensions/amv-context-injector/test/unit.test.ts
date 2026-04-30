@@ -20,10 +20,12 @@ import {
 	buildSessionHandoff,
 	detectActivePack,
 	findVaultRoot,
+	listPacks,
 	nowTimestamp,
 	readFileSafe,
 	readFrontmatterType,
 	scanPackFiles,
+	scorePackForCwd,
 	todayStr,
 	truncate,
 } from "../index.js";
@@ -218,10 +220,11 @@ tags:
 	return { vaultRoot, packPath, packsDir };
 }
 
-/** Create a mock ExtensionAPI and capture registered tools/hooks. */
+/** Create a mock ExtensionAPI and capture registered tools/hooks/commands. */
 function createMockPi() {
 	const tools: Record<string, any> = {};
 	const hooks: Record<string, (...args: unknown[]) => unknown> = {};
+	const commands: Record<string, any> = {};
 
 	const pi = {
 		registerTool(toolDef: any) {
@@ -230,9 +233,12 @@ function createMockPi() {
 		on(event: string, handler: (...args: unknown[]) => unknown) {
 			hooks[event] = handler;
 		},
+		registerCommand(name: string, def: any) {
+			commands[name] = def;
+		},
 	};
 
-	return { pi, tools, hooks };
+	return { pi, tools, hooks, commands };
 }
 
 /** Create a mock extension context. */
@@ -393,6 +399,89 @@ describe("detectActivePack", () => {
 		fs.mkdirSync(packsDir);
 		fs.writeFileSync(path.join(packsDir, ".gitkeep"), "");
 		expect(detectActivePack(packsDir)).toBeNull();
+	});
+
+	test("auto-detects pack by cwd match", () => {
+		const packsDir = path.join(tmpDir, "packs");
+		// Pack A references "aura-ai"
+		const packA = path.join(packsDir, "aura", "20-context");
+		fs.mkdirSync(packA, { recursive: true });
+		fs.writeFileSync(path.join(packA, "context.md"), "This pack covers aura-ai platform.");
+		// Pack B references "weaurapay-api"
+		const packB = path.join(packsDir, "payments", "20-context");
+		fs.mkdirSync(packB, { recursive: true });
+		fs.writeFileSync(path.join(packB, "context.md"), "This pack covers weaurapay-api services.");
+
+		// cwd is inside weaurapay-api → should pick payments pack
+		expect(detectActivePack(packsDir, "/code/weaurapay-api/payment")).toBe("payments");
+		// cwd is inside aura-ai → should pick aura pack
+		expect(detectActivePack(packsDir, "/code/aura-ai/apps/web")).toBe("aura");
+	});
+
+	test("falls back to manifest when cwd matches nothing", () => {
+		const packsDir = path.join(tmpDir, "packs");
+		fs.mkdirSync(path.join(packsDir, "alpha"), { recursive: true });
+		fs.mkdirSync(path.join(packsDir, "beta", "00-system"), { recursive: true });
+		expect(detectActivePack(packsDir, "/totally/unrelated/project")).toBe("beta");
+	});
+});
+
+// ==========================================================================
+// 3b. Pack scoring for cwd
+// ==========================================================================
+
+describe("scorePackForCwd", () => {
+	beforeEach(setupTmpDir);
+	afterEach(cleanupTmpDir);
+
+	test("returns 0 for empty pack", () => {
+		const packDir = path.join(tmpDir, "empty-pack");
+		fs.mkdirSync(packDir);
+		expect(scorePackForCwd(packDir, "/code/aura-ai")).toBe(0);
+	});
+
+	test("scores higher when more cwd segments match", () => {
+		const packDir = path.join(tmpDir, "pack");
+		fs.mkdirSync(packDir, { recursive: true });
+		fs.writeFileSync(path.join(packDir, "context.md"), "Covers aura-ai and weaurapay-api.");
+
+		const score1 = scorePackForCwd(packDir, "/code/aura-ai");
+		expect(score1).toBeGreaterThan(0);
+
+		const score2 = scorePackForCwd(packDir, "/code/random-project");
+		expect(score2).toBe(0);
+	});
+
+	test("ignores very short path segments", () => {
+		const packDir = path.join(tmpDir, "pack");
+		fs.mkdirSync(packDir, { recursive: true });
+		fs.writeFileSync(path.join(packDir, "context.md"), "Content with ab in it.");
+		expect(scorePackForCwd(packDir, "/x/ab")).toBe(0);
+	});
+});
+
+// ==========================================================================
+// 3c. List packs
+// ==========================================================================
+
+describe("listPacks", () => {
+	beforeEach(setupTmpDir);
+	afterEach(cleanupTmpDir);
+
+	test("returns empty array for non-existent dir", () => {
+		expect(listPacks(path.join(tmpDir, "nope"))).toEqual([]);
+	});
+
+	test("lists pack directories, ignores files and hidden", () => {
+		const packsDir = path.join(tmpDir, "packs");
+		fs.mkdirSync(path.join(packsDir, "alpha"), { recursive: true });
+		fs.mkdirSync(path.join(packsDir, "beta"), { recursive: true });
+		fs.mkdirSync(path.join(packsDir, ".hidden"), { recursive: true });
+		fs.writeFileSync(path.join(packsDir, ".gitkeep"), "");
+		const packs = listPacks(packsDir);
+		expect(packs).toHaveLength(2);
+		expect(packs).toContain("alpha");
+		expect(packs).toContain("beta");
 	});
 });
 
@@ -658,6 +747,14 @@ describe("extension registration", () => {
 		expect(hooks["before_agent_start"]).toBeDefined();
 		expect(hooks["session_before_compact"]).toBeDefined();
 		expect(hooks["session_shutdown"]).toBeDefined();
+	});
+
+	test("registers /pack command", () => {
+		const { pi, commands } = createMockPi();
+		registerExtension(pi as any);
+
+		expect(commands["pack"]).toBeDefined();
+		expect(commands["pack"].description).toContain("switch");
 	});
 });
 

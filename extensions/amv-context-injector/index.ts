@@ -91,18 +91,64 @@ export function findVaultRoot(startDir: string): string | null {
 	return null;
 }
 
-export function detectActivePack(packsDir: string): string | null {
-	if (!fs.existsSync(packsDir)) return null;
+/**
+ * List all available packs in the packs directory.
+ */
+export function listPacks(packsDir: string): string[] {
+	if (!fs.existsSync(packsDir)) return [];
 	const entries = fs.readdirSync(packsDir, { withFileTypes: true });
-	const packs = entries
+	return entries
 		.filter((e) => e.isDirectory() && !e.name.startsWith("."))
 		.map((e) => e.name);
+}
+
+/**
+ * Score how well a pack matches the current working directory.
+ * Reads the pack's resource-map and context files looking for repo names
+ * that match the cwd basename or parent directories.
+ */
+export function scorePackForCwd(packPath: string, cwd: string): number {
+	const cwdParts = cwd.split(path.sep).filter(Boolean);
+	// Collect the last 3 path segments as candidates (e.g. "aura", "weaurapay-api", "payment")
+	const candidates = cwdParts.slice(-3).map((p) => p.toLowerCase());
+	if (candidates.length === 0) return 0;
+
+	// Scan all markdown files in the pack for mentions of cwd segments
+	const files = scanPackFiles(packPath);
+	let score = 0;
+
+	for (const f of files) {
+		const content = readFileSafe(f);
+		if (!content) continue;
+		const contentLower = content.toLowerCase();
+		for (const candidate of candidates) {
+			if (candidate.length >= 3 && contentLower.includes(candidate)) {
+				score++;
+			}
+		}
+	}
+
+	return score;
+}
+
+export function detectActivePack(packsDir: string, cwd?: string): string | null {
+	const packs = listPacks(packsDir);
 	if (packs.length === 0) return null;
 	if (packs.length === 1) return packs[0];
-	// Multiple packs: prefer one with a manifest
+
+	// Auto-detect by cwd: score each pack and pick the best match
+	if (cwd) {
+		const scored = packs
+			.map((pack) => ({ pack, score: scorePackForCwd(path.join(packsDir, pack), cwd) }))
+			.filter((s) => s.score > 0)
+			.sort((a, b) => b.score - a.score);
+		if (scored.length > 0) return scored[0].pack;
+	}
+
+	// Fallback: prefer one with a manifest
 	for (const pack of packs) {
-		const manifestGlob = path.join(packsDir, pack, "00-system");
-		if (fs.existsSync(manifestGlob)) return pack;
+		const manifestDir = path.join(packsDir, pack, "00-system");
+		if (fs.existsSync(manifestDir)) return pack;
 	}
 	return packs[0];
 }
@@ -439,7 +485,7 @@ export default function (pi: ExtensionAPI) {
 
 		vaultRoot = root;
 		const packsDir = path.join(root, "packs");
-		const detected = detectActivePack(packsDir);
+		const detected = detectActivePack(packsDir, ctx.cwd);
 
 		if (!detected) {
 			if (ctx.hasUI) {
@@ -549,6 +595,77 @@ export default function (pi: ExtensionAPI) {
 	// --- session_shutdown: cleanup ---
 	pi.on("session_shutdown", async (_event, _ctx) => {
 		// Nothing to flush at the moment
+	});
+
+	// --- /pack command: list and switch packs ---
+	pi.registerCommand("pack", {
+		description: "List or switch AMV memory packs. Usage: /pack [name]",
+		handler: async (args, ctx) => {
+			if (!vaultRoot) {
+				ctx.ui.notify("AMV: No vault loaded.", "error");
+				return;
+			}
+
+			const packsDir = path.join(vaultRoot, "packs");
+			const packs = listPacks(packsDir);
+
+			if (packs.length === 0) {
+				ctx.ui.notify("AMV: No packs found.", "info");
+				return;
+			}
+
+			const target = args?.trim();
+
+			if (!target) {
+				// No argument: show picker
+				const options = packs.map((p) => ({
+					label: p === activePack ? `📦 ${p} (active)` : `   ${p}`,
+					value: p,
+				}));
+
+				const selected = await ctx.ui.select("Select memory pack", options);
+				if (!selected) return;
+
+				if (selected === activePack) {
+					ctx.ui.notify(`AMV: Already using pack "${activePack}".`, "info");
+					return;
+				}
+
+				activePack = selected;
+				activePackPath = path.join(packsDir, selected);
+				qmdCollection = `amv-${selected}`;
+
+				if (qmdAvailable) {
+					qmdEmbed(qmdCollection, activePackPath).catch(() => {});
+				}
+
+				ctx.ui.notify(`AMV: Switched to pack "${activePack}".`, "success");
+				ctx.ui.setStatus("amv", `📦 ${activePack}`);
+				return;
+			}
+
+			// Argument provided: switch directly
+			if (!packs.includes(target)) {
+				ctx.ui.notify(`AMV: Pack "${target}" not found. Available: ${packs.join(", ")}`, "error");
+				return;
+			}
+
+			if (target === activePack) {
+				ctx.ui.notify(`AMV: Already using pack "${activePack}".`, "info");
+				return;
+			}
+
+			activePack = target;
+			activePackPath = path.join(packsDir, target);
+			qmdCollection = `amv-${target}`;
+
+			if (qmdAvailable) {
+				qmdEmbed(qmdCollection, activePackPath).catch(() => {});
+			}
+
+			ctx.ui.notify(`AMV: Switched to pack "${activePack}".`, "success");
+			ctx.ui.setStatus("amv", `📦 ${activePack}`);
+		},
 	});
 
 	// --- amv_search tool ---
