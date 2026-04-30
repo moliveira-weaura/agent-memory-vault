@@ -681,22 +681,24 @@ export default function (pi: ExtensionAPI) {
 
 			if (!target) {
 				// No argument: show picker
-				const options = packs.map((p) => ({
-					label: p === activePack ? `📦 ${p} (active)` : `   ${p}`,
-					value: p,
-				}));
+				const options = packs.map((p) =>
+					p === activePack ? `📦 ${p} (active)` : p,
+				);
 
 				const selected = await ctx.ui.select("Select memory pack", options);
 				if (!selected) return;
 
-				if (selected === activePack) {
+				// Strip the prefix if it was the active one
+				const packName = selected.replace(/^📦 /, "").replace(/ \(active\)$/, "");
+
+				if (packName === activePack) {
 					ctx.ui.notify(`AMV: Already using pack "${activePack}".`, "info");
 					return;
 				}
 
-				activePack = selected;
-				activePackPath = path.join(packsDir, selected);
-				qmdCollection = `amv-${selected}`;
+				activePack = packName;
+				activePackPath = path.join(packsDir, packName);
+				qmdCollection = `amv-${packName}`;
 
 				if (qmdAvailable) {
 					qmdEmbed(qmdCollection, activePackPath).catch(() => {});
