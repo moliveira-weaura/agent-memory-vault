@@ -66,10 +66,10 @@ function createTestVault(packName = "test-pack"): {
 	fs.mkdirSync(path.join(packPath, "00-system", "pi-agent"), { recursive: true });
 	fs.mkdirSync(path.join(packPath, "00-system", "indexes"), { recursive: true });
 	fs.mkdirSync(path.join(packPath, "20-context"), { recursive: true });
-	fs.mkdirSync(path.join(packPath, "30-decisions"), { recursive: true });
+	fs.mkdirSync(path.join(packPath, "50-decisions"), { recursive: true });
 	fs.mkdirSync(path.join(packPath, "40-actions"), { recursive: true });
-	fs.mkdirSync(path.join(packPath, "50-observations"), { recursive: true });
-	fs.mkdirSync(path.join(packPath, "80-runbooks"), { recursive: true });
+	fs.mkdirSync(path.join(packPath, "60-observations"), { recursive: true });
+	fs.mkdirSync(path.join(packPath, "70-runbooks"), { recursive: true });
 
 	// Manifest
 	fs.writeFileSync(
@@ -142,7 +142,7 @@ tags:
 
 	// Decision
 	fs.writeFileSync(
-		path.join(packPath, "30-decisions", "001-use-bun.md"),
+		path.join(packPath, "50-decisions", "001-use-bun.md"),
 		`---
 type: decision
 id: decision.${packName}.001-use-bun
@@ -195,7 +195,7 @@ Configured GitHub Actions for CI:
 
 	// Runbook
 	fs.writeFileSync(
-		path.join(packPath, "80-runbooks", "deploy.md"),
+		path.join(packPath, "70-runbooks", "deploy.md"),
 		`---
 type: runbook
 id: runbook.${packName}.deploy
@@ -740,7 +740,7 @@ describe("amv_search tool (grep fallback)", () => {
 		// Add many matching files
 		for (let i = 0; i < 10; i++) {
 			fs.writeFileSync(
-				path.join(packPath, "50-observations", `obs-${i}.md`),
+				path.join(packPath, "60-observations", `obs-${i}.md`),
 				`---\ntype: observation\n---\n# Observation ${i}\nFound deploy issue.`,
 			);
 		}

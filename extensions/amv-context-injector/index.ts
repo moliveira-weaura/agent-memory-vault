@@ -285,8 +285,10 @@ export function buildPackContext(packPath: string, searchResults?: string): stri
 	}
 
 	// 5. Active decisions
-	const decisionsDir = path.join(packPath, "30-decisions");
-	if (fs.existsSync(decisionsDir)) {
+	const decisionsDir = ["50-decisions", "30-decisions"]
+		.map((d) => path.join(packPath, d))
+		.find((d) => fs.existsSync(d));
+	if (decisionsDir) {
 		const decisionFiles = scanPackFiles(decisionsDir).slice(0, 5);
 		const decisionParts: string[] = [];
 		for (const f of decisionFiles) {
@@ -306,8 +308,10 @@ export function buildPackContext(packPath: string, searchResults?: string): stri
 	}
 
 	// 6. Runbooks
-	const runbooksDir = path.join(packPath, "80-runbooks");
-	if (fs.existsSync(runbooksDir)) {
+	const runbooksDir = ["70-runbooks", "80-runbooks"]
+		.map((d) => path.join(packPath, d))
+		.find((d) => fs.existsSync(d));
+	if (runbooksDir) {
 		const runbookFiles = scanPackFiles(runbooksDir).slice(0, 3);
 		const runbookParts: string[] = [];
 		for (const f of runbookFiles) {
