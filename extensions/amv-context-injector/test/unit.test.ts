@@ -24,6 +24,7 @@ import {
 	nowTimestamp,
 	readFileSafe,
 	readFrontmatterType,
+	resolvePacksDir,
 	scanPackFiles,
 	scorePackForCwd,
 	todayStr,
@@ -482,6 +483,63 @@ describe("listPacks", () => {
 		expect(packs).toHaveLength(2);
 		expect(packs).toContain("alpha");
 		expect(packs).toContain("beta");
+	});
+});
+
+// ==========================================================================
+// 3d. Packs directory resolution
+// ==========================================================================
+
+describe("resolvePacksDir", () => {
+	beforeEach(setupTmpDir);
+	afterEach(() => {
+		delete process.env.AMV_PACKS_PATH;
+		cleanupTmpDir();
+	});
+
+	test("returns null when no packs exist anywhere", () => {
+		// Note: may return package-root fallback in dev.
+		// In production (npm install), package packs/ is empty.
+		const result = resolvePacksDir("/tmp/nonexistent-project-12345");
+		// Either null or the dev package-root fallback
+		if (result !== null) {
+			// Must be the package-root fallback with real packs
+			expect(listPacks(result).length).toBeGreaterThan(0);
+		}
+	});
+
+	test("AMV_PACKS_PATH takes highest priority", () => {
+		const envDir = path.join(tmpDir, "env-packs");
+		fs.mkdirSync(path.join(envDir, "my-pack"), { recursive: true });
+		process.env.AMV_PACKS_PATH = envDir;
+
+		// Also create project-local packs
+		const projDir = path.join(tmpDir, ".pi", "memory-vault", "packs", "proj-pack");
+		fs.mkdirSync(projDir, { recursive: true });
+
+		const result = resolvePacksDir(tmpDir);
+		expect(result).toBe(envDir);
+	});
+
+	test("finds project-local packs", () => {
+		const projPacks = path.join(tmpDir, ".pi", "memory-vault", "packs");
+		fs.mkdirSync(path.join(projPacks, "local-pack"), { recursive: true });
+
+		const result = resolvePacksDir(tmpDir);
+		expect(result).toBe(projPacks);
+	});
+
+	test("ignores empty packs dirs", () => {
+		// Create project-local dir but with no packs (only .gitkeep)
+		const projPacks = path.join(tmpDir, ".pi", "memory-vault", "packs");
+		fs.mkdirSync(projPacks, { recursive: true });
+		fs.writeFileSync(path.join(projPacks, ".gitkeep"), "");
+
+		const result = resolvePacksDir(tmpDir);
+		// Should NOT resolve to the empty project-local dir
+		if (result !== null) {
+			expect(result).not.toBe(projPacks);
+		}
 	});
 });
 

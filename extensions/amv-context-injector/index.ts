@@ -444,8 +444,68 @@ export function todayStr(): string {
 }
 
 // ---------------------------------------------------------------------------
+// Vault / packs path resolution
+// ---------------------------------------------------------------------------
+
+/**
+ * Default global packs directory: ~/.pi/agent/memory-vault/packs
+ */
+const DEFAULT_GLOBAL_PACKS_DIR = path.join(
+	process.env.HOME ?? process.env.USERPROFILE ?? "~",
+	".pi",
+	"agent",
+	"memory-vault",
+	"packs",
+);
+
+/**
+ * Resolve the packs directory using a priority chain:
+ *
+ *   1. AMV_PACKS_PATH env var           — explicit override
+ *   2. .pi/memory-vault/packs/          — project-local (relative to cwd)
+ *   3. ~/.pi/agent/memory-vault/packs/  — global default
+ *   4. <package-root>/packs/            — fallback for development
+ *
+ * Returns the first path that exists and contains at least one pack.
+ */
+export function resolvePacksDir(cwd: string): string | null {
+	const candidates: { label: string; dir: string }[] = [];
+
+	// 1. Explicit env var
+	if (process.env.AMV_PACKS_PATH) {
+		candidates.push({ label: "AMV_PACKS_PATH", dir: process.env.AMV_PACKS_PATH });
+	}
+
+	// 2. Project-local: <cwd>/.pi/memory-vault/packs/
+	candidates.push({
+		label: "project-local",
+		dir: path.join(cwd, ".pi", "memory-vault", "packs"),
+	});
+
+	// 3. Global default: ~/.pi/agent/memory-vault/packs/
+	candidates.push({ label: "global", dir: DEFAULT_GLOBAL_PACKS_DIR });
+
+	// 4. Package root fallback (development): <package>/packs/
+	const packageRoot = findVaultRoot(path.resolve(__dirname, "../.."));
+	if (packageRoot) {
+		candidates.push({ label: "package-root", dir: path.join(packageRoot, "packs") });
+	}
+
+	// Return first candidate that exists and has packs
+	for (const { dir } of candidates) {
+		if (listPacks(dir).length > 0) {
+			return dir;
+		}
+	}
+
+	return null;
+}
+
+// ---------------------------------------------------------------------------
 // Test hooks (override state for testing)
 // ---------------------------------------------------------------------------
+
+let _packsDir = "";
 
 export function _setVaultRoot(root: string) {
 	vaultRoot = root;
@@ -463,6 +523,7 @@ export function _resetState() {
 	activePackPath = "";
 	qmdAvailable = false;
 	qmdCollection = "";
+	_packsDir = "";
 }
 
 // ---------------------------------------------------------------------------
@@ -472,19 +533,21 @@ export function _resetState() {
 export default function (pi: ExtensionAPI) {
 	// --- session_start: detect vault, active pack, qmd ---
 	pi.on("session_start", async (_event, ctx) => {
-		// Find vault root
-		const skillDir = path.resolve(__dirname, "../../skills/agent-memory-vault");
-		const root = findVaultRoot(skillDir) ?? findVaultRoot(process.cwd());
+		// Resolve packs directory
+		const packsDir = resolvePacksDir(ctx.cwd);
 
-		if (!root) {
+		if (!packsDir) {
 			if (ctx.hasUI) {
-				ctx.ui.notify("AMV: No agent-memory-vault found in project tree.", "info");
+				ctx.ui.notify(
+					"AMV: No packs found. Set AMV_PACKS_PATH, create .pi/memory-vault/packs/, or use ~/.pi/agent/memory-vault/packs/",
+					"info",
+				);
 			}
 			return;
 		}
 
-		vaultRoot = root;
-		const packsDir = path.join(root, "packs");
+		vaultRoot = path.dirname(packsDir);
+		_packsDir = packsDir;
 		const detected = detectActivePack(packsDir, ctx.cwd);
 
 		if (!detected) {
@@ -606,7 +669,7 @@ export default function (pi: ExtensionAPI) {
 				return;
 			}
 
-			const packsDir = path.join(vaultRoot, "packs");
+			const packsDir = _packsDir || path.join(vaultRoot, "packs");
 			const packs = listPacks(packsDir);
 
 			if (packs.length === 0) {
