@@ -26,3 +26,6 @@ private/
 
 # Generated files
 packs/**/00-system/generated/
+
+# Extension dependencies
+node_modules/

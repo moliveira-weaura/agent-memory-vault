@@ -1,0 +1,20 @@
+{
+  "name": "amv-context-injector",
+  "version": "0.1.0",
+  "description": "Automatic context injection extension for Agent Memory Vault. Injects pack context into system prompt, provides semantic search via qmd, and captures session handoffs.",
+  "keywords": ["pi-package", "agent-memory-vault", "memory", "context-injection"],
+  "license": "MIT",
+  "type": "module",
+  "pi": {
+    "extensions": ["./index.ts"]
+  },
+  "devDependencies": {
+    "@mariozechner/pi-coding-agent": "*",
+    "@mariozechner/pi-ai": "*",
+    "@sinclair/typebox": "*"
+  },
+  "scripts": {
+    "test": "bun test test/",
+    "typecheck": "tsc --noEmit"
+  }
+}
